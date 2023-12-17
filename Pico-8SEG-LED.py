@@ -166,14 +166,8 @@ class LED_8SEG():
             time.sleep(.0005)
             
     def Print(self, input_msg):
-        #self.write_4_digits(fourth = "-", third = "-", second = "-", first = "-" )
-        #time.sleep(1)
-        #self.write_4_digits(fourth = input_msg[0], third = input_msg[1], second = input_msg[2], first = input_msg[3])
-        #time.sleep(1)
         j = 0
         for i in range(len(input_msg) - 3):
-            #self.write_4_digits(fourth = "-", third = "-", second = "-", first = "-" )
-            #time.sleep(1)
             self.write_4_digits(fourth = input_msg[i+j], third = input_msg[i + j + 1], second = input_msg[i + j + 2], first = input_msg[i + j + 3])
             time.sleep(.0)
             j += 0
@@ -184,14 +178,3 @@ if __name__=='__main__':
     #color BRG
     while True:
         LED.Print("----HELLO----")
-    
-#     while(1):
-#         for o in range(99999):
-#             time.sleep(0.0005)
-#             LED.write_cmd(UNITS,LED.SEG8[o%10])
-#             time.sleep(0.0005)
-#             LED.write_cmd(TENS,LED.SEG8[(o%100)//10])
-#             time.sleep(0.0005)
-#             LED.write_cmd(HUNDREDS,LED.SEG8[(o%1000)//100]|Dot)
-#             time.sleep(0.0005)
-#             LED.write_cmd(KILOBIT,LED.SEG8[(o%10000)//1000])
