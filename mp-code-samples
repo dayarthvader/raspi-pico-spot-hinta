@@ -16,6 +16,7 @@ transfer_fee = 0.05  # Adjust transfer fee as needed
 def connect_to_wifi():
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
+
     if not wlan.isconnected():
         print("Connecting to Wi-Fi...")
         wlan.connect(wifi_ssid, wifi_password)
