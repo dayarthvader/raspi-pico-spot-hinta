@@ -1,1 +1,59 @@
+import network
+import urequests
+import machine
+import time
+
+# Wi-Fi Configuration
+wifi_ssid = "your_wifi_ssid"
+wifi_password = "your_wifi_password"
+
+# API Configuration
+api_url = "your_api_url"
+tax_rate = 0.1  # Adjust tax rate as needed
+transfer_fee = 0.05  # Adjust transfer fee as needed
+
+# Function to connect to Wi-Fi
+def connect_to_wifi():
+    wlan = network.WLAN(network.STA_IF)
+    wlan.active(True)
+    if not wlan.isconnected():
+        print("Connecting to Wi-Fi...")
+        wlan.connect(wifi_ssid, wifi_password)
+        while not wlan.isconnected():
+            pass
+    print("Connected to Wi-Fi")
+
+# Function to fetch data from API
+def fetch_api_data():
+    response = urequests.get(api_url)
+    data = response.json()  # Assuming API response is in JSON format
+    response.close()
+    return data
+
+# Function to calculate price with taxes and transfer fees
+def calculate_total_price(hourly_price):
+    return hourly_price * (1 + tax_rate + transfer_fee)
+
+# Function to display data on segment display
+def display_on_segment(total_prices):
+    # Add code to interface with your segment display
+    pass
+
+# Main program
+def main():
+    connect_to_wifi()
+
+    while True:
+        api_data = fetch_api_data()
+
+        hourly_prices = api_data["hourly_prices"]  # Adjust this based on your API response structure
+
+        total_prices = [calculate_total_price(hourly_price) for hourly_price in hourly_prices]
+
+        display_on_segment(total_prices)
+
+        time.sleep(3600)  # Sleep for one hour before fetching data again
+
+if __name__ == "__main__":
+    main()
 
