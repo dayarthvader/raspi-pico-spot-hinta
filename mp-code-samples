@@ -1,7 +1,7 @@
 import network
-import urequests
+import socket
 import machine
-import time
+from time import sleep
 
 # Wi-Fi Configuration
 wifi_ssid = "your_wifi_ssid"
