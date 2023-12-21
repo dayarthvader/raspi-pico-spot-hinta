@@ -1,28 +1,39 @@
+## connecting to wi-fi
 import network
-import socket
-import machine
-from time import sleep
+import time
 
-# Wi-Fi Configuration
-wifi_ssid = "your_wifi_ssid"
-wifi_password = "your_wifi_password"
+ssid = 'Wireless Network'
+password = 'The Password'
+
+wlan = network.WLAN(network.STA_IF)
+wlan.active(True)
+wlan.connect(ssid, password)
+
+# Wait for connect or fail
+max_wait = 10
+while max_wait > 0:
+if wlan.status() < 0 or wlan.status() >= 3:
+break
+max_wait -= 1
+print('waiting for connection...')
+time.sleep(1)
+
+# Handle connection error
+if wlan.status() != 3:
+raise RuntimeError('network connection failed')
+else:
+print('connected')
+status = wlan.ifconfig()
+print( 'ip = ' + status[0] )
+
+
+
+####################
 
 # API Configuration
 api_url = "your_api_url"
 tax_rate = 0.1  # Adjust tax rate as needed
 transfer_fee = 0.05  # Adjust transfer fee as needed
-
-# Function to connect to Wi-Fi
-def connect_to_wifi():
-    wlan = network.WLAN(network.STA_IF)
-    wlan.active(True)
-
-    if not wlan.isconnected():
-        print("Connecting to Wi-Fi...")
-        wlan.connect(wifi_ssid, wifi_password)
-        while not wlan.isconnected():
-            pass
-    print("Connected to Wi-Fi")
 
 # Function to fetch data from API
 def fetch_api_data():
