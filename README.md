@@ -10,3 +10,4 @@
  - https://api.spot-hinta.fi/swagger/ui#/
  - https://sahko.tk/
  - https://www.tomshardware.com/how-to/connect-raspberry-pi-pico-w-to-the-internet
+ - https://datasheets.raspberrypi.com/picow/connecting-to-the-internet-with-pico-w.pdf
