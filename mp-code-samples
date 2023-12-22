@@ -69,3 +69,24 @@ def main():
 if __name__ == "__main__":
     main()
 
+####### another option
+
+import requests
+
+api_url = "https://api.example.com/data"
+headers = {"Authorization": "Bearer YOUR_API_KEY"}  # Include any necessary headers
+
+try:
+    # Make a GET request to the API
+    response = requests.get(api_url, headers=headers)
+
+    # Check if the request was successful (status code 200)
+    if response.status_code == 200:
+        data = response.json()  # Assuming the API response is in JSON format
+        print("API Response:")
+        print(data)
+    else:
+        print(f"Failed to fetch data. Status Code: {response.status_code}")
+
+except Exception as e:
+    print(f"An error occurred: {e}")
