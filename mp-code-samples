@@ -1,8 +1,6 @@
+## connecting to wi-fi
 import network
 import time
-import urequests
-
-## connecting to wi-fi
 ssid = 'Wireless Network'
 password = 'The Password'
 
@@ -32,9 +30,10 @@ print( 'ip = ' + status[0] )
 ####################
 
 # API Configuration
-api_url = "your_api_url"
-tax_rate = 0.1  # Adjust tax rate as needed
-transfer_fee = 0.05  # Adjust transfer fee as needed
+import urequests
+api_url = "https://api.porssisahko.net/v1/latest-prices.json"
+tax_rate = 0.0279372  # Adjust tax rate as needed
+transfer_fee = 0.0309  # Adjust transfer fee as needed
 
 # Function to fetch data from API
 def fetch_api_data():
@@ -45,7 +44,7 @@ def fetch_api_data():
 
 # Function to calculate price with taxes and transfer fees
 def calculate_total_price(hourly_price):
-    return hourly_price * (1 + tax_rate + transfer_fee)
+    return hourly_price + tax_rate + transfer_fee
 
 # Function to display data on segment display
 def display_on_segment(total_prices):
@@ -74,12 +73,12 @@ if __name__ == "__main__":
 
 import requests
 
-api_url = "https://api.example.com/data"
-headers = {"Authorization": "Bearer YOUR_API_KEY"}  # Include any necessary headers
+api_url = "https://api.porssisahko.net/v1/latest-prices.json"
+    # Include any necessary headers
 
 try:
     # Make a GET request to the API
-    response = requests.get(api_url, headers=headers)
+    response = requests.get(api_url)
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
