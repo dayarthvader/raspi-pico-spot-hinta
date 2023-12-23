@@ -1,7 +1,8 @@
-## connecting to wi-fi
 import network
 import time
+import urequests
 
+## connecting to wi-fi
 ssid = 'Wireless Network'
 password = 'The Password'
 
