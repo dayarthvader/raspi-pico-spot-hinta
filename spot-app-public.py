@@ -200,37 +200,94 @@ else:
 	status = wlan.ifconfig()
 	print( 'ip = ' + status[0] )
 
-# API Configuration
-import urequests
-api_url = "https://api.porssisahko.net/v1/latest-prices.json" # Includes up to 36 hour spot price data
-tax_rate = 0.0279372  # EUR/kWh
-transfer_fee = 0.0309  # EUR/kWh
-
 # Function to fetch data from API
-def fetch_api_data():
-    response = urequests.get(api_url)
-    data = response.json()
-    response.close()
-    return data
+import urequests
+import json
+from datetime import datetime
+
+def fetch_api_data(api_url):
+    try:
+        response = urequests.get(api_url)
+        if response.status_code == 200:
+            data = response.json()
+            response.close()
+            return data
+        else:
+            print("Error: Failed to fetch data from API. Status code:", response.status_code)
+            return None
+    except Exception as e:
+        print("Error:", e)
+        return None
+
+def save_prices(data):
+    try:
+        with open("prices_data.json", "w") as file:
+            json.dump(data, file)
+        print("Data saved successfully.")
+    except Exception as e:
+        print("Error:", e)
+
+def load_prices():
+    try:
+        with open("prices_data.json", "r") as file:
+            data = json.load(file)
+        return data
+    except FileNotFoundError:
+        print("Error: Prices data file not found.")
+        return None
+    except Exception as e:
+        print("Error:", e)
+        return None
+
+def find_current_price(data):
+    current_time = datetime.now()
+    prices = data["prices"]
+    for entry in prices:
+        start_time = datetime.strptime(entry["startDate"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        end_time = datetime.strptime(entry["endDate"], "%Y-%m-%dT%H:%M:%S.%fZ")
+        if start_time <= current_time <= end_time:
+            return entry["price"]
+    print("Error: No price found for the current time.")
+    return None
+
+# Fetch data from API
+api_url = "https://api.porssisahko.net/v1/latest-prices.json"
+data = fetch_api_data(api_url)
+
+# Save data
+if data:
+    save_prices(data)
+
+# Load data
+saved_data = load_prices()
+
+# Find current price
+if saved_data:
+    current_price = find_current_price(saved_data)
+    if current_price:
+        print("Current price:", current_price)
+
+# Define taxes and transfer fees
+electricity_tax_rate = "0.0279372"  # EUR/kWh
+transfer_fee = "0.0309"  # EUR/kWh
+VAT = "1.24" # Value added tax is 24%
 
 # Summing up fees and spot price
-    display_price = data + tax_rate + transfer_fee
+display_price = "current_price" + "VAT * current_price" + "transfer_fee"
+print(display_price) # this is the final value we want to display on the segment display.
 
-
-# Main program
+# Main program, needs updating.
 def main():
     connect_to_wifi()
 
     while True:
-        api_data = fetch_api_data()
-
-        hourly_prices = api_data["hourly_prices"]  # Adjust this based on your API response structure
-
-        total_prices = [calculate_total_price(hourly_price) for hourly_price in hourly_prices]
-
-        display_on_segment(total_prices)
-
-        time.sleep(86400)  # Sleep for 24h before fetching data again
+        current_price = find_current_price(load_prices())
+        if current_price:
+            display_price = calculate_display_price(current_price)
+            print("Display Price:", display_price)
+            # Update display here
+            LED.Print(str(display_price))
+        time.sleep(3600)  # Sleep for 1 hour
 
 if __name__ == "__main__":
     LED = LED_SEG()
