@@ -273,24 +273,16 @@ transfer_fee = "0.0309"  # EUR/kWh
 VAT = "1.24" # Value added tax is 24%
 
 # Summing up fees and spot price
-display_price = "current_price" + "VAT * current_price" + "transfer_fee"
+display_price = current_price * VAT + transfer_fee + electricity_tax_rate
 print(display_price) # this is the final value we want to display on the segment display.
 
-# Main program, needs updating.
+# Main program
 def main():
-    connect_to_wifi()
-
+    LED = LED_8SEG()
     while True:
-        current_price = find_current_price(load_prices())
-        if current_price:
-            display_price = calculate_display_price(current_price)
-            print("Display Price:", display_price)
-            # Update display here
-            LED.Print(str(display_price))
-        time.sleep(3600)  # Sleep for 1 hour
+        # Display the calculated price continuously
+        LED.Print(str(display_price))
+        time.sleep(1)  # Update display every second
 
 if __name__ == "__main__":
-    LED = LED_SEG()
-    #color BRG
-    while True:
-        LED.Print(display_price)
+    main()
