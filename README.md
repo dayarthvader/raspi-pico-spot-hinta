@@ -15,5 +15,5 @@
 
 ## electricity price information
  - spot price margin = 0.005 eur/kwh
- - electricity tranfer fee = 0.0309 eur/kwh #https://caruna.fi/sites/default/files/docs/Caruna%20Espoo%20Oy%20verkkopalveluhinnasto%201.10.2023_1.pdf
+ - electricity tranfer fee = 0.0309 eur/kwh
  - electricity taxes = 0.0279372 eur/kwh
